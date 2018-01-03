@@ -1,0 +1,6 @@
+.mvn/
+.idea/
+node_modules/
+target/
+
+src/main/resources/public/bower_components/

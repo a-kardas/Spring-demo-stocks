@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="Application allows to buy and sell shares.">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="Aleksandra Kardas">
+    <link rel="icon" href="favicon.ico">
+    <title>Stocks App</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="bower_components/materialize/dist/css/materialize.css" />
+    <link rel="stylesheet" href="styles/main.css"> <!--Custom css script-->
+
+</head>
+<body ng-app="stockApp">
+    <nav>
+        <div class="nav-wrapper indigo">
+            <a href="#" class="brand-logo left">Stocks</a>
+            <ul class="right">
+                <li><a ng-href="/#!/login" ng-if="!isAuthenticated"><i class="material-icons">power_settings_new</i></a></li>
+                <li><a ng-href="/#!/settings" ng-if="isAuthenticated">Settings</a></li>
+                <li><a href="" ng-if="isAuthenticated"><i class="material-icons">power_settings_new</i></a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <div ng-view=""></div>
+        </div>
+    </main>
+
+
+
+    <footer class="page-footer indigo">
+        <div class="footer-copyright">
+            <div class="container">
+                © 2018 Aleksandra Kardas
+            </div>
+        </div>
+    </footer>
+
+
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/angular-touch/angular-touch.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+    <script src="bower_components/materialize/dist/js/materialize.js"></script>
+    <script src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
+
+    <script src="scripts/app/app.js"></script>
+
+    <script src="scripts/app/config/stock.route.js"></script>
+    <script src="scripts/app/config/register.route.js"></script>
+    <script src="scripts/app/config/login.route.js"></script>
+
+    <script src="scripts/app/controller/stock.controller.js"></script>
+    <script src="scripts/app/controller/register.controller.js"></script>
+    <script src="scripts/app/controller/login.controller.js"></script>
+
+    <script src="scripts/app/auth/auth.service.js"></script>
+
+    <script src="scripts/app/component/register.resource.js"></script>
+    <script src="scripts/app/component/auth.resource.js"></script>
+    <script src="scripts/app/component/stock.resource.js"></script>
+
+
+    <script>
+        $( document ).ready(function(){
+            $(".dropdown-button").dropdown();
+        });
+   </script>
+
+
+</body>
+
+</html>

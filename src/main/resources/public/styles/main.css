@@ -1,0 +1,23 @@
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+#menu{
+    display: inline-block;
+    padding-left: 1vh;
+    padding-right: 5vh;
+}
+
+.margin-top-20{
+    margin-top: 20px;
+}
+
+.quiz-image-preview {
+    max-width: 200px;
+}
