@@ -18,7 +18,7 @@ angular.module('stockApp')
         var register = function (data) {
             RegisterRsc.user(data, function(){
                 Materialize.toast('Thanks! Now you can log in!', 4000);
-                $location.path("/login");
+                $location.path("/email");
             }, function(){
                 Materialize.toast('Error! Probably entered e-mail address is in use.', 4000);
                 return;

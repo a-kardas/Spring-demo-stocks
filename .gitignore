@@ -26,3 +26,5 @@ nbdist/
 
 node_modules/
 src/main/resources/public/bower_components
+db.mv.db
+db.trace.db

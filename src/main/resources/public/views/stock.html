@@ -1,6 +1,52 @@
 <div class="center-block">
-  <p class="text-center">Hello from the other side</p>
   <div class="row">
+    <div class="col s12 m6 l6">
+      <p class="flow-text inline-block left">Stock prices</p>
+      <p class="flow-text inline-block right">{{exchangeRate.publicationDate | date : 'yyyy-MM-dd HH:mm:ss'}}</p>
+      <table class="striped">
+        <thead>
+          <tr>
+            <th>Company</th>
+            <th>Value</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="stock in exchangeRate.stocks">
+            <td>{{stock.code}}</td>
+            <td>{{stock.price}}</td>
+            <td>
+              <a class="waves-effect waves-light btn">
+                <i class="material-icons left">attach_money</i>Buy
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col s12 m6 l6">
+      <p class="flow-text">My wallet</p>
+      <table class="striped">
+        <thead>
+        <tr>
+          <th>Company</th>
+          <th>Value</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="stock in stocks">
+          <td>{{stock.code}}</td>
+          <td>{{stock.price}}</td>
+          <td>
+            <a class="waves-effect waves-light btn">
+              <i class="material-icons left">attach_money</i>Buy
+            </a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 

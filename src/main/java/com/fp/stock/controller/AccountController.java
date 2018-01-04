@@ -1,14 +1,29 @@
 package com.fp.stock.controller;
 
 
+import com.fp.stock.dto.UserDTO;
+import com.fp.stock.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.security.Principal;
+import java.util.Enumeration;
 
 
 @RestController
@@ -17,26 +32,57 @@ public class AccountController {
 
     private final Logger log = LoggerFactory.getLogger(AccountController.class);
 
-/*    @RequestMapping(value = "/authenticate",
-            method = RequestMethod.POST)
-    public void authorize(@RequestParam String username, @RequestParam String password) {
+    @Autowired
+    private UserService userService;
 
-    }*/
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @RequestMapping(value = "/authenticate",
+            method = RequestMethod.POST)
+    public void authorize(@RequestBody @Valid UserDTO userDTO) {
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword());
+        Authentication authentication = this.authenticationManager.authenticate(token);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
 
     @RequestMapping(value = "/authenticate",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Principal isAuthenticated(Principal user) {
+    public ResponseEntity<UserDTO> isAuthenticated(Principal user) {
         log.debug("REST request to check if the current user is authenticated");
-        return user;
+        if(user == null)
+           return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+
+        UserDTO userDTO = new UserDTO();
+        userDTO.setEmail(user.getName());
+        return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
 
-    /*@RequestMapping(value = "/account",
+    @RequestMapping(value = "/register",
+            method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDTO> register(@RequestBody @Valid UserDTO userDTO) {
+        log.debug("REST request to register a new user");
+        UserDTO result = userService.saveUser(userDTO);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+
+    @RequestMapping(value = "/logout",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> getAccount() {
-        return Optional.ofNullable(userService.getUser())
-                .map(user -> new ResponseEntity<>(UserDTO.builder().email(user.getLogin()).build(), HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.UNAUTHORIZED));
-    }*/
+    public ResponseEntity<UserDTO> logout(HttpServletRequest request) throws ServletException {
+
+        SecurityContextHolder.clearContext();
+
+        // Remove all session data
+        HttpSession session = request.getSession();
+
+        for (Enumeration e = session.getAttributeNames(); e.hasMoreElements();) {
+            session.removeAttribute((String) e.nextElement());
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

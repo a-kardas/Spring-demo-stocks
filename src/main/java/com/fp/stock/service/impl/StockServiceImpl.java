@@ -12,6 +12,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,29 +31,36 @@ public class StockServiceImpl implements StockService {
         log.info("Event handler - Exchange rate downloaded.");
 
         if(!stockList.getData().getItems().isEmpty()){
-
+            ZonedDateTime publicationDate = stockList.getData().getPublicationDate();
             stockList.getData().getItems().stream().forEach(s -> {
                 Optional<Stock> existingStock = stockRepository.findByNameAndCode(s.getName(), s.getCode()); //check if same exists
                 if(existingStock.isPresent()){
                     Stock stock = existingStock.get();
-                    stock.setExchangeRate(s);
+                    stock.setExchangeRate(s, publicationDate);
+                    stockRepository.save(stock);
                 } else {
+                    s.setPublicationDate(publicationDate);
                     stockRepository.save(s);
                 }
             });
         }
-
-        List<Stock> all = stockRepository.findAll();
     }
 
     @Override
     public StockList getExchangeRate() {
-        return null;
+        List<Stock> all = stockRepository.findAll();
+        StockList result = new StockList();
+
+        if(all != null && !all.isEmpty())
+            result.setData(all);
+
+        return result;
     }
 
     @Override
-    public Stock getCurrentExchangeRate(Long id) {
-        return null;
+    public Stock getExchangeRate(Long id) {
+        Stock stock = stockRepository.findOne(id);
+        return stock;
     }
 
 }

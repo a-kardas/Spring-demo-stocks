@@ -11,14 +11,14 @@ public class UserController {
     /*@Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/user/login/{login}",
+    @RequestMapping(value = "/user/email/{email}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> getUserByLogin(@PathVariable String login){
-        Optional<User> user = userService.getUserByLogin(login);
+    public ResponseEntity<UserDTO> getUserByLogin(@PathVariable String email){
+        Optional<User> user = userService.getUserByLogin(email);
 
         if(user.isPresent()) {
-            UserDTO userDTO = UserDTO.builder().email(user.get().getLogin()).build();
+            UserDTO userDTO = UserDTO.builder().email(user.get().getEmail()).build();
             return new ResponseEntity<>(userDTO, HttpStatus.OK);
         }
         else

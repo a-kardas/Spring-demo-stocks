@@ -14,11 +14,18 @@ angular
 
         $rootScope.$on('notAuthenticated', function() { $rootScope.isAuthenticated = false; });
 
-        $rootScope.$on('isAuthenticated', function() { $rootScope.isAuthenticated = true; });
+        $rootScope.$on('isAuthenticated', function(event, args) {
+            $rootScope.isAuthenticated = true;
+            $rootScope.username = args.email;
+        });
+
+        $rootScope.logout = function () {
+            AuthSrv.logout();
+        }
 
 
     })
     .config(function($httpProvider){
         //$httpProvider.defaults.withCredentials = true;
-        //$httpProvider.interceptors.push('authExpiredInterceptor');
+        $httpProvider.interceptors.push('authExpiredInterceptor');
     });

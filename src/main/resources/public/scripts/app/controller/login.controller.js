@@ -2,7 +2,7 @@
 
 
 angular.module('stockApp')
-    .controller('LoginCtrl', function ($scope, AuthRsc, $location) {
+    .controller('LoginCtrl', function ($scope, AuthRsc, $location, AuthSrv) {
 
         $scope.user = {
             rememberMe : true
@@ -15,6 +15,7 @@ angular.module('stockApp')
             }
             AuthRsc.login(credentials, function(){
                 $location.url("/");
+                AuthSrv.isAuthenticated();
             }, function(){
                 Materialize.toast('Error! Try again.', 4000);
                 return;
