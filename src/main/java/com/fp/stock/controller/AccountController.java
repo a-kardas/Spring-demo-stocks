@@ -2,6 +2,8 @@ package com.fp.stock.controller;
 
 
 import com.fp.stock.dto.UserDTO;
+import com.fp.stock.mapper.UserMapper;
+import com.fp.stock.model.User;
 import com.fp.stock.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,15 +15,14 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.nio.file.AccessDeniedException;
 import java.security.Principal;
 import java.util.Enumeration;
 
@@ -54,18 +55,18 @@ public class AccountController {
         if(user == null)
            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 
-        UserDTO userDTO = new UserDTO();
-        userDTO.setEmail(user.getName());
+        UserDTO userDTO = userService.findUserByLogin(user.getName());
         return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/register",
             method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> register(@RequestBody @Valid UserDTO userDTO) {
         log.debug("REST request to register a new user");
         UserDTO result = userService.saveUser(userDTO);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
 

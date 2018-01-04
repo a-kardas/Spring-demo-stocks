@@ -21,7 +21,7 @@ public class UserStock implements Serializable {
 
     @NotNull
     @Column(name="stock_id", nullable = false)
-    private Long stock_id;
+    private Long stockId;
 
     @NotNull
     @Column(name="amount", nullable = false)

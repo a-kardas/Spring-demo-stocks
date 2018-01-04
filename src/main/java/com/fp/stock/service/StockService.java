@@ -11,5 +11,7 @@ public interface StockService {
 
     StockList getExchangeRate();
 
+    StockList getPublicStocks();
+
     Stock getExchangeRate(Long id);
 }

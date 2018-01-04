@@ -16,7 +16,7 @@ angular
 
         $rootScope.$on('isAuthenticated', function(event, args) {
             $rootScope.isAuthenticated = true;
-            $rootScope.username = args.email;
+            $rootScope.user = args;
         });
 
         $rootScope.logout = function () {

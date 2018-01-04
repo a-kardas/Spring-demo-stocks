@@ -42,13 +42,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .headers().frameOptions().disable().and() //h2 console requirement
                 .csrf().disable()
                 .authorizeRequests()
-                    /*.antMatchers(HttpMethod.OPTIONS, "/api*").permitAll()*/
                     .antMatchers("/public/**").permitAll()
                     .antMatchers("/h2/**/**").permitAll()
                     .antMatchers(HttpMethod.POST, "/api/public/authenticate").permitAll()
                     .antMatchers(HttpMethod.POST, "/api/public/register").permitAll()
-                    .antMatchers("/api/stock/**").authenticated();
-
+                    .antMatchers("/api/stock/public/list").permitAll()
+                    .antMatchers("/api/stock/**").authenticated()
+                    .antMatchers("/api/user/**").authenticated();
     }
 
 }

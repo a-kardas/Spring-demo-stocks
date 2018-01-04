@@ -5,6 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -31,9 +32,14 @@ public class User implements UserDetails, Serializable {
     private String password;
 
     @NotNull
+    @Column(name="name", nullable = false)
+    private String name;
+
+    @NotNull
     @Column(name="created_date", nullable = false)
     private ZonedDateTime createdDate = ZonedDateTime.now();
 
+    @Min(value = 0)
     @Column(name="financial_resources", nullable = false)
     private BigDecimal financialResources = BigDecimal.ZERO;
 

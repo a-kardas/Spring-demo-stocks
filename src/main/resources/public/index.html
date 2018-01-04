@@ -19,7 +19,7 @@
         <div class="nav-wrapper indigo">
             <a href="#" class="brand-logo left">Stocks</a>
             <ul class="right">
-                <li ng-if="isAuthenticated">Logged in as {{username}}</li>
+                <li ng-if="isAuthenticated">Logged in as {{user.name}}</li>
                 <li><a ng-href="/#!/login" uib-tooltip="Login" ng-if="!isAuthenticated"><i class="material-icons">power_settings_new</i></a></li>
                 <li><a ng-href="/#!/settings" ng-if="isAuthenticated">Settings</a></li>
                 <li><a href="" ng-click="logout()" uib-tooltip="Logout" ng-if="isAuthenticated"><i class="material-icons">power_settings_new</i></a></li>
@@ -71,6 +71,7 @@
     <script src="scripts/app/component/register.resource.js"></script>
     <script src="scripts/app/component/auth.resource.js"></script>
     <script src="scripts/app/component/stock.resource.js"></script>
+    <script src="scripts/app/component/user.resource.js"></script>
 
 
     <script src="scripts/app/auth/auth.interceptor.js"></script>

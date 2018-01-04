@@ -2,8 +2,9 @@
 
 
 angular.module('stockApp')
-  .controller('StockCtrl', function ($scope, StockRsc) {
+  .controller('StockCtrl', function ($scope, StockRsc, UserRsc) {
       var _timeout = null;
+
       $scope.exchangeRate = {};
 
       var _getExchangeRate = function() {
@@ -17,6 +18,14 @@ angular.module('stockApp')
           _timeout = setTimeout(_getExchangeRate, 10000);
       }
 
+      var _getUserWallet = function () {
+          UserRsc.get({}, function (data) {
+              $scope.user = data;
+          }, function () {
+              console.log(error);
+          })
+      }
+
       $scope.$on("$destroy", function() {
           if (_timeout) {
               clearTimeout(_timeout);
@@ -24,4 +33,5 @@ angular.module('stockApp')
       });
 
       _getExchangeRate();
+      _getUserWallet();
   });

@@ -2,9 +2,11 @@
 
 
 angular.module('stockApp')
-    .controller('RegisterCtrl', function ($scope, RegisterRsc, $location) {
+    .controller('RegisterCtrl', function ($scope, RegisterRsc, $location, StockRsc) {
 
-        $scope.newUser = {};
+        $scope.newUser = {
+            stocks : []
+        };
 
         $scope.register = function () {
             if($scope.newUser.password !== $scope.newUser.repeatedPassword){
@@ -24,4 +26,17 @@ angular.module('stockApp')
                 return;
             })
         }
+
+        var _getStocks = function(){
+            StockRsc.publicList({}, function(data){
+                for(var i = 0; i < data.items.length; i++){
+                   // $scope.newUser.stocks[i] = { stock : data.items[i], amount : undefined}
+                    $scope.newUser.stocks[i] = data.items[i];
+                }
+
+            }, function () {
+                Materialize.toast('Error! Cannot load stocks. You can fill it later in settings section.', 4000);
+            })
+        }
+        _getStocks();
     });

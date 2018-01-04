@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
@@ -55,6 +56,15 @@ public class StockServiceImpl implements StockService {
             result.setData(all);
 
         return result;
+    }
+
+    @Override
+    public StockList getPublicStocks() {
+        StockList stockList = getExchangeRate();
+        stockList.getItems().stream().forEach(s -> {
+            s.clearNonPublicData();
+        });
+        return stockList;
     }
 
     @Override

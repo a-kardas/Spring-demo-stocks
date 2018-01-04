@@ -4,22 +4,64 @@
 
     <div class="row">
         <form novalidate class="col s12" name="registration">
-            <div class="row">
-                <div class="input-field col s12">
-                    <input id="email" type="email" class="validate" ng-model="newUser.email" required>
-                    <label for="email" data-error="Nope. It isn't proper email address." data-success="We won't spam you. Maybe.">Email</label>
+            <div class="section">
+                <h5>Your account</h5>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="name" type="text" class="validate" ng-model="newUser.name" pattern="^[A-Za-z]{1,}\s[A-Za-z]{1,}$" required>
+                        <label for="name" data-error="Please text your first and last name" data-success="OK">First and last name</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="email" type="email" class="validate" ng-model="newUser.email" required>
+                        <label for="email" data-error="Nope. It isn't proper email address." data-success="We won't spam you. Maybe.">Email</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="password" type="password" class="validate" ng-model="newUser.password" pattern="^^[a-zA-Z0-9@#$%\^&+=]{4,}$" required>
+                        <label for="password" data-error="Only letters, numbers and special characters are allowed. Minimum 4 signs." data-success="OK">Password</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="second-password" type="password" class="validate" pattern="^[a-zA-Z0-9@#$%\^&+=]{4,}$" ng-model="newUser.repeatedPassword" required>
+                        <label for="second-password" data-error="Only letters, numbers and special characters are allowed. Minimum 4 signs." data-success="OK">Repeat password</label>
+                    </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="input-field col s12">
-                    <input id="password" type="password" class="validate" ng-model="newUser.password" required>
-                    <label for="password">Password</label>
+            <div class="divider"></div>
+            <div class="section">
+                <h5>Finacial information</h5>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="financialResources" type="number" min="0" class="validate" ng-model="newUser.financialResources" required>
+                        <label for="financialResources" data-error="Please text your financial resources" data-success="OK">Your financial resources in PLN</label>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="input-field col s12">
-                    <input id="second-password" type="password" class="validate" ng-model="newUser.repeatedPassword" required>
-                    <label for="second-password">Repeat password</label>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <table class="striped">
+                            <thead>
+                            <tr>
+                                <th>Company</th>
+                                <th>Amount</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="stock in newUser.stocks">
+                                <td>{{stock.code}}</td>
+                                <td>
+                                    <div class="input-field col s12">
+                                        <input id="amount{{$index}}" class="validate" type="number" min="0" ng-model="stock.unit">
+                                        <label for="amount{{$index}}" data-error="Please set your stocks" data-success="OK">Your stocks</label>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
             <div class="row">

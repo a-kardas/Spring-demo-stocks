@@ -14,7 +14,7 @@
         <tbody>
           <tr ng-repeat="stock in exchangeRate.stocks">
             <td>{{stock.code}}</td>
-            <td>{{stock.price}}</td>
+            <td>{{stock.price | currency:""}}</td>
             <td>
               <a class="waves-effect waves-light btn">
                 <i class="material-icons left">attach_money</i>Buy
@@ -30,22 +30,27 @@
         <thead>
         <tr>
           <th>Company</th>
+          <th>Unit price</th>
+          <th>Amount</th>
           <th>Value</th>
           <th>Actions</th>
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="stock in stocks">
-          <td>{{stock.code}}</td>
-          <td>{{stock.price}}</td>
+        <tr ng-repeat="userStock in user.userStocks">
+          <td>{{userStock.stock.code}}</td>
+          <td>{{userStock.stock.price | currency:""}}</td>
+          <td>{{userStock.amount}}</td>
+          <td>{{userStock.amount * userStock.stock.price | currency:""}}</td>
           <td>
             <a class="waves-effect waves-light btn">
-              <i class="material-icons left">attach_money</i>Buy
+              <i class="material-icons left">attach_money</i>Sell
             </a>
           </td>
         </tr>
         </tbody>
       </table>
+      <p class="flow-text">Available money: {{user.financialResources | currency : ""}} PLN</p>
     </div>
   </div>
 </div>

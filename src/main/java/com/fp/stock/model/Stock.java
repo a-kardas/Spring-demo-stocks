@@ -66,4 +66,10 @@ public class Stock implements Serializable {
         this.publicationDate = publicationDate;
     }
 
+    public void clearNonPublicData(){
+        this.unit = 0;
+        this.price = BigDecimal.ZERO;
+        this.amount = 0;
+    }
+
 }

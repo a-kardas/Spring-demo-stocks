@@ -32,4 +32,13 @@ public class StockController {
         StockList exchangeRate = stockService.getExchangeRate();
         return new ResponseEntity<>(exchangeRate, HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/public/list",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<StockList> getPublicStocks() {
+        log.debug("REST request to get public stocks");
+        StockList exchangeRate = stockService.getPublicStocks();
+        return new ResponseEntity<>(exchangeRate, HttpStatus.OK);
+    }
 }
