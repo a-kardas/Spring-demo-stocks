@@ -29,9 +29,9 @@ angular.module('stockApp')
 
         var _getStocks = function(){
             StockRsc.publicList({}, function(data){
-                for(var i = 0; i < data.items.length; i++){
+                for(var i = 0; i < data.length; i++){
                    // $scope.newUser.stocks[i] = { stock : data.items[i], amount : undefined}
-                    $scope.newUser.stocks[i] = data.items[i];
+                    $scope.newUser.stocks[i] = data[i];
                 }
 
             }, function () {

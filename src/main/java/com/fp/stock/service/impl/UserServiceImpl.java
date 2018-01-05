@@ -44,13 +44,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         List<UserStock> userStockList = new ArrayList<>();
         userDTO.getStocks().stream().forEach(s -> {
-            if(s.getUnit() > 0) {
+            if(s.getAmount() > 0) {
                 Optional<Stock> stock = stockRepository.findByNameAndCode(s.getName(), s.getCode());
                 if(stock.isPresent()){
                     UserStock userStock = new UserStock();
                     userStock.setUserId(savedUser.getId());
                     userStock.setStockId(stock.get().getId());
-                    userStock.setAmount(s.getUnit());
+                    userStock.setAmount(s.getAmount());
                     userStockList.add(userStock);
                 }
             }

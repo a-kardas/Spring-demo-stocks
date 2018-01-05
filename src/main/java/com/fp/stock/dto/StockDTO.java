@@ -1,17 +1,13 @@
 package com.fp.stock.dto;
 
 
+import com.fp.stock.model.ExchangeRate;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.NotBlank;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 @Data
-@NoArgsConstructor
 public class StockDTO implements Serializable {
 
     @NotBlank
@@ -20,9 +16,12 @@ public class StockDTO implements Serializable {
     @NotBlank
     private String code;
 
-    @Min(value = 1)
-    private int unit;
+    private Integer amount;
 
-    @NotNull
-    private BigDecimal price;
+    private ExchangeRate rate;
+
+    public void clearNonPublicData(){
+        this.amount = null;
+        this.rate = null;
+    }
 }

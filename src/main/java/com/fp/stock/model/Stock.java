@@ -10,6 +10,8 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Data
@@ -30,21 +32,14 @@ public class Stock implements Serializable {
     @Column(name="code", nullable = false)
     private String code;
 
-    @Min(value = 1)
-    @Column(name="unit", nullable = false)
-    private int unit;
-
     @NotNull
-    @Column(name="price", nullable = false)
-    private BigDecimal price;
-
-    @NotNull
-    @Column(name="publicationDate", nullable = false)
-    private ZonedDateTime publicationDate;
-
-    @NotNull
+    @Min(value = 0)
     @Column(name="amount", nullable = false)
     private int amount;
+
+    @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
+    @JoinColumn(name = "stock_id")
+    private Set<ExchangeRate> exchangeRates = new HashSet<>();
 
     @Override
     public boolean equals(Object object){
@@ -60,16 +55,13 @@ public class Stock implements Serializable {
         return false;
     }
 
-    public void setExchangeRate(Stock stock, ZonedDateTime publicationDate){
-        this.unit = stock.getUnit();
-        this.price = stock.getPrice();
-        this.publicationDate = publicationDate;
-    }
+    public void setExchangeRate(BigDecimal price, int unit,  ZonedDateTime publicationDate){
+        ExchangeRate rate = new ExchangeRate();
+        rate.setPrice(price);
+        rate.setUnit(unit);
+        rate.setPublicationDate(publicationDate);
 
-    public void clearNonPublicData(){
-        this.unit = 0;
-        this.price = BigDecimal.ZERO;
-        this.amount = 0;
+        this.exchangeRates.add(rate);
     }
 
 }

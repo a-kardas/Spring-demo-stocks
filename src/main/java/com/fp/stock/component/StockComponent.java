@@ -1,17 +1,17 @@
 package com.fp.stock.component;
 
+import com.fp.stock.component.events.ExchangeRateDownloadedEvent;
+import com.fp.stock.component.events.ExchangeRateErrorEvent;
 import com.fp.stock.config.ExchangeRateException;
 import com.fp.stock.config.ExchangeRateProperties;
+import com.fp.stock.dto.ExternalStockListDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.annotation.Profile;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
@@ -38,13 +38,14 @@ public class StockComponent {
                                                  exchangeRateProperties.getPort(),
                                                  exchangeRateProperties.getAccessPath());
         try {
-            ResponseEntity<StockList> response = restTemplate.getForEntity(url, StockList.class);
-            StockList stocks = response.getBody();
+            ResponseEntity<ExternalStockListDTO> response = restTemplate.getForEntity(url, ExternalStockListDTO.class);
+            ExternalStockListDTO stocks = response.getBody();
 
             this.publisher.publishEvent(new ExchangeRateDownloadedEvent(stocks));
 
         } catch (RestClientException exception) {
             log.error("Error in scheduled job. Exchange rates can not be downloaded.");
+            this.publisher.publishEvent(new ExchangeRateErrorEvent());
             throw new ExchangeRateException(true, "Exchange rates can not be downloaded.");
         }
     }

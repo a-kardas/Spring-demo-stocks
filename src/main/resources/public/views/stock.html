@@ -1,57 +1,59 @@
 <div class="center-block">
   <div class="row">
     <div class="col s12 m6 l6">
-      <p class="flow-text inline-block left">Stock prices</p>
-      <p class="flow-text inline-block right">{{exchangeRate.publicationDate | date : 'yyyy-MM-dd HH:mm:ss'}}</p>
+      <p class="flow-text inline-block left">Stocks prices</p>
+      <p class="flow-text inline-block right">{{exchangeRate.publicationDate | date : 'HH:mm:ss'}}</p>
       <table class="striped">
         <thead>
-          <tr>
-            <th>Company</th>
-            <th>Value</th>
-            <th>Actions</th>
-          </tr>
+        <tr>
+          <th>Company</th>
+          <th>Value</th>
+          <th>Actions</th>
+        </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="stock in exchangeRate.stocks">
-            <td>{{stock.code}}</td>
-            <td>{{stock.price | currency:""}}</td>
-            <td>
-              <a class="waves-effect waves-light btn">
-                <i class="material-icons left">attach_money</i>Buy
-              </a>
-            </td>
-          </tr>
+        <tr ng-repeat="stock in exchangeRate.stocks">
+          <td>{{stock.code}}</td>
+          <td>{{stock.rate.price}}</td>
+          <td>
+            <a class="waves-effect waves-light btn" ng-click="openBuyStockModal(stock)" data-target='buyStockModal' modal open="buyStockModal" >
+              Buy
+            </a>
+          </td>
+        </tr>
         </tbody>
       </table>
     </div>
     <div class="col s12 m6 l6">
       <p class="flow-text">My wallet</p>
       <table class="striped">
-        <thead>
-        <tr>
-          <th>Company</th>
-          <th>Unit price</th>
-          <th>Amount</th>
-          <th>Value</th>
-          <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="userStock in user.userStocks">
-          <td>{{userStock.stock.code}}</td>
-          <td>{{userStock.stock.price | currency:""}}</td>
-          <td>{{userStock.amount}}</td>
-          <td>{{userStock.amount * userStock.stock.price | currency:""}}</td>
-          <td>
-            <a class="waves-effect waves-light btn">
-              <i class="material-icons left">attach_money</i>Sell
-            </a>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+      <thead>
+      <tr>
+        <th>Company</th>
+        <th>Unit&nbsp;price</th>
+        <th>Amount</th>
+        <th>Value</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="userStock in user.userStocks">
+        <td>{{userStock.stock.code}}</td>
+        <td>{{userStock.stock.rate.price}}</td>
+        <td>{{userStock.amount}}</td>
+        <td>{{userStock.amount * userStock.stock.rate.price | number: 4}}</td>
+        <td>
+          <a class="waves-effect waves-light btn" ng-click="openSellStockModal(userStock)" data-target='sellStockModal' modal open="sellStockModal">
+            Sell
+          </a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+      <div class="divider"></div>
       <p class="flow-text">Available money: {{user.financialResources | currency : ""}} PLN</p>
     </div>
   </div>
 </div>
+<div ng-include="'views/modals/buyStock.html'"></div>
 

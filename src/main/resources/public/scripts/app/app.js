@@ -7,7 +7,8 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
-    'LocalStorageModule'
+    'LocalStorageModule',
+    'ui.materialize'
   ])
     .run(function($rootScope, AuthSrv){
         AuthSrv.isAuthenticated();

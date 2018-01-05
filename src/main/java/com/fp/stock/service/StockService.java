@@ -1,17 +1,29 @@
 package com.fp.stock.service;
 
 
-import com.fp.stock.component.ExchangeRateDownloadedEvent;
-import com.fp.stock.component.StockList;
+import com.fp.stock.component.events.ExchangeRateDownloadedEvent;
+import com.fp.stock.dto.ExternalStockListDTO;
+import com.fp.stock.component.events.ExchangeRateErrorEvent;
+import com.fp.stock.config.OperationsNotAllowedException;
+import com.fp.stock.dto.StockDTO;
 import com.fp.stock.model.Stock;
+
+import java.security.Principal;
+import java.util.List;
 
 public interface StockService {
 
-    void saveExchangeRate(ExchangeRateDownloadedEvent<StockList> stockList);
+    void handleDownloadedExchangeRate(ExchangeRateDownloadedEvent<ExternalStockListDTO> stockList);
 
-    StockList getExchangeRate();
+    void handleExchangeRateError(ExchangeRateErrorEvent event);
 
-    StockList getPublicStocks();
+    List<StockDTO> getExchangeRate();
+
+    List<StockDTO> getPublicStocks();
+
+    boolean buyStocks(Principal principal, StockDTO stockDTO) throws OperationsNotAllowedException;
+
+    boolean sellStocks(Principal principal, StockDTO stockDTO) throws OperationsNotAllowedException;
 
     Stock getExchangeRate(Long id);
 }

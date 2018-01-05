@@ -29,5 +29,5 @@ public class UserDTO implements Serializable {
 
     private List<StockDTO> stocks;
 
-    private List<UserStock> userStocks;
+    private List<UserStockDTO> userStocks;
 }

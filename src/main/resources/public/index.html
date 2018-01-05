@@ -21,7 +21,7 @@
             <ul class="right">
                 <li ng-if="isAuthenticated">Logged in as {{user.name}}</li>
                 <li><a ng-href="/#!/login" uib-tooltip="Login" ng-if="!isAuthenticated"><i class="material-icons">power_settings_new</i></a></li>
-                <li><a ng-href="/#!/settings" ng-if="isAuthenticated">Settings</a></li>
+                <li><a ng-if="isAuthenticated">Settings</a></li>
                 <li><a href="" ng-click="logout()" uib-tooltip="Logout" ng-if="isAuthenticated"><i class="material-icons">power_settings_new</i></a></li>
             </ul>
         </div>
@@ -55,6 +55,7 @@
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
     <script src="bower_components/materialize/dist/js/materialize.js"></script>
     <script src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
+    <script src="bower_components/angular-materialize/src/angular-materialize.js"></script>
 
     <script src="scripts/app/app.js"></script>
 

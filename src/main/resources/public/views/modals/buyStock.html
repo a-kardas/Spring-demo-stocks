@@ -1,0 +1,22 @@
+<div id="buyStockModal" class="modal">
+    <div class="modal-content">
+        <h4>Buy stock {{stock.code}}</h4>
+        <p>Company: {{stock.name}}</p>
+        <p>Unit: {{stock.rate.unit}}</p>
+        <p>Single unit price: {{stock.rate.price}}</p>
+        <p>Available units: {{stock.amount}}</p>
+        <div class="divider"></div>
+        <form novalidate class="col s12" name="purchase">
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="amount" name="amount" type="number" class="validate" ng-model="userStock.amount" min="{{stock.rate.unit}}" max="{{stock.amount}}" step="{{stock.rate.unit}} "required>
+                    <label for="amount" data-error="Minimum {{stock.rate.unit}}, Maximum {{stock.amount}}, Multiple {{stock.rate.unit}}" data-success="OK">Amount</label>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <a class="waves-effect waves-light btn" ng-click="buyStock()" <!--ng-disabled="purchase.$invalid"-->>Confirm</a>
+        <a class="waves-effect waves-light btn" ng-click="dismissModal()">Cancel</a>
+    </div>
+</div>
