@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 public class ValidatorBaseResult {
 
-    private Stock stock;
+    protected Stock stock;
 
-    private ExchangeRate rate;
+    protected ExchangeRate rate;
 }

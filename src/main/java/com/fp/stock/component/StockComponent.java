@@ -2,6 +2,7 @@ package com.fp.stock.component;
 
 import com.fp.stock.component.events.ExchangeRateDownloadedEvent;
 import com.fp.stock.component.events.ExchangeRateErrorEvent;
+import com.fp.stock.component.events.ExchangeRateSuccessEvent;
 import com.fp.stock.config.ExchangeRateException;
 import com.fp.stock.config.ExchangeRateProperties;
 import com.fp.stock.dto.ExternalStockListDTO;
@@ -42,6 +43,7 @@ public class StockComponent {
             ExternalStockListDTO stocks = response.getBody();
 
             this.publisher.publishEvent(new ExchangeRateDownloadedEvent(stocks));
+            this.publisher.publishEvent(new ExchangeRateSuccessEvent());
 
         } catch (RestClientException exception) {
             log.error("Error in scheduled job. Exchange rates can not be downloaded.");

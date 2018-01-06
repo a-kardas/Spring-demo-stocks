@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public abstract class OperationBaseValidator {
 
@@ -26,13 +28,15 @@ public abstract class OperationBaseValidator {
 
         if(stock.getAmount() < stockDTO.getAmount()) {
             throw new OperationsNotAllowedException(OperationsNotAllowedException.NOT_ENOUGH_UNITS_ON_STOCK);
-        } else if(stock.getAmount() % stockDTO.getAmount() != 0) {
-            throw new OperationsNotAllowedException(OperationsNotAllowedException.AMOUNT_IS_NOT_MULTIPLE);
         }
 
         //VALIDATE RATES
         List<ExchangeRate> rates = getRatesOrThrow(stock.getId(), stockDTO);
         ExchangeRate rate = rates.stream().findFirst().get();
+
+        if(stockDTO.getAmount() % rate.getUnit() != 0) {
+            throw new OperationsNotAllowedException(OperationsNotAllowedException.AMOUNT_IS_NOT_MULTIPLE);
+        }
 
         ValidatorBaseResult result = new ValidatorBaseResult();
         result.setStock(stock);
@@ -44,6 +48,11 @@ public abstract class OperationBaseValidator {
     protected Stock getStockOrThrow(StockDTO stockDTO) throws OperationsNotAllowedException {
         Optional<Stock> stock = stockRepository.findByNameAndCode(stockDTO.getName(), stockDTO.getCode());
         if(stock.isPresent()){
+            /*Set<ExchangeRate> sorted = stock.get().getExchangeRates().stream()
+                    .sorted((e1, e2) -> e1.getPublicationDate().compareTo(e2.getPublicationDate()))
+                    .collect(Collectors.toSet());
+
+            stock.get().setExchangeRates(sorted);*/
             return stock.get();
         }
 

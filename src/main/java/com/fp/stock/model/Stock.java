@@ -39,6 +39,7 @@ public class Stock implements Serializable {
 
     @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "stock_id")
+    @OrderBy("creationDate DESC")
     private Set<ExchangeRate> exchangeRates = new HashSet<>();
 
     @Override

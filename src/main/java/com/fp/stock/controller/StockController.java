@@ -1,5 +1,6 @@
 package com.fp.stock.controller;
 
+import com.fp.stock.component.operations.DeferredStackOperation;
 import com.fp.stock.config.OperationsNotAllowedException;
 import com.fp.stock.dto.ExternalStockListDTO;
 import com.fp.stock.dto.StockDTO;
@@ -40,19 +41,17 @@ public class StockController {
     @RequestMapping(value = "/buy",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Boolean> buyStocks(Principal user, @RequestBody StockDTO stockDTO) throws OperationsNotAllowedException {
+    public DeferredStackOperation buyStocks(Principal user, @RequestBody StockDTO stockDTO) throws OperationsNotAllowedException {
         log.debug("REST request to buy stocks");
-        boolean executed = stockService.buyStocks(user, stockDTO);
-        return new ResponseEntity<>(executed, HttpStatus.OK);
+        return stockService.buyStocks(user, stockDTO);
     }
 
     @RequestMapping(value = "/sell",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Boolean> sellStocks(Principal user, @RequestBody StockDTO stockDTO) throws OperationsNotAllowedException {
+    public DeferredStackOperation sellStocks(Principal user, @RequestBody StockDTO stockDTO) throws OperationsNotAllowedException {
         log.debug("REST request to sell stocks");
-        boolean executed = stockService.sellStocks(user, stockDTO);
-        return new ResponseEntity<>(executed, HttpStatus.OK);
+        return stockService.sellStocks(user, stockDTO);
     }
 
     @RequestMapping(value = "/public/list",

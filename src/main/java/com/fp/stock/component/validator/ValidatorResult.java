@@ -12,4 +12,9 @@ public class ValidatorResult extends ValidatorBaseResult {
     private User user;
 
     private BigDecimal stockPrice;
+
+    public ValidatorResult(ValidatorBaseResult result){
+        this.stock = result.getStock();
+        this.rate = result.getRate();
+    }
 }

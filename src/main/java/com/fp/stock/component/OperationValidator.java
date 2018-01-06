@@ -1,5 +1,6 @@
 package com.fp.stock.component;
 
+import com.fp.stock.component.operations.DeferredStackOperation;
 import com.fp.stock.component.validator.OperationBaseValidator;
 import com.fp.stock.component.validator.ValidatorResult;
 import com.fp.stock.config.OperationsNotAllowedException;
@@ -20,7 +21,7 @@ public class OperationValidator extends OperationBaseValidator {
     private UserRepository userRepository;
 
     public ValidatorResult validatePurchase(Principal principal, StockDTO stockDTO) throws OperationsNotAllowedException {
-        ValidatorResult result = (ValidatorResult) validate(stockDTO);
+        ValidatorResult result = new ValidatorResult(validate(stockDTO));
 
         BigDecimal stocksPrice = result.getRate().getPrice().multiply(BigDecimal.valueOf(stockDTO.getAmount()));
 

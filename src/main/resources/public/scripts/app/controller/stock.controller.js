@@ -36,7 +36,6 @@ angular.module('stockApp')
           }
       });
 
-
       $scope.openBuyStockModal = function (selectedStock) {
           $scope.stock = selectedStock;
 
@@ -52,39 +51,33 @@ angular.module('stockApp')
 
       $scope.openSellStockModal = function (selectedUserStock) {
           $scope.userStock = selectedUserStock;
-
-          /*$scope.userStock = {
-              name : selectedStock.name,
-              code : selectedStock.code,
-              amount : 0,
-              rate : selectedStock.rate
-          }*/
-
           $scope.sellStockModal = true;
       }
 
       $scope.sellStock = function () {
           StockRsc.sell($scope.userStock, function(){
               $scope.dismissModal();
-              $route.reload();
               Materialize.toast("Success!.", 4000);
           }, function (error) {
-              Materialize.toast(error.message, 4000);
+              $scope.dismissModal();
+              Materialize.toast(error.data.message, 4000);
           })
       }
 
       $scope.buyStock = function () {
           StockRsc.buy($scope.userStock, function(){
               $scope.dismissModal();
-              $route.reload();
               Materialize.toast("Success!.", 4000);
           }, function (error) {
-              Materialize.toast(error.message, 4000);
+              $scope.dismissModal();
+              Materialize.toast(error.data.message, 4000);
           })
       }
 
       $scope.dismissModal = function () {
           $scope.buyStockModal = false;
+          $scope.sellStockModal = false;
+          //$route.reload();
       }
 
       _getExchangeRate();
