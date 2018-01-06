@@ -9,7 +9,7 @@
         <form novalidate class="col s12" name="purchase">
             <div class="row">
                 <div class="input-field col s12">
-                    <input id="amount" name="amount" type="number" class="validate" ng-model="userStock.amount" min="{{stock.rate.unit}}" max="{{stock.amount}}" step="{{stock.rate.unit}} "required>
+                    <input id="amount" name="amount" type="number" class="validate" ng-model="userStock.amount" required>
                     <label for="amount" data-error="Minimum {{stock.rate.unit}}, Maximum {{stock.amount}}, Multiple {{stock.rate.unit}}" data-success="OK">Amount</label>
                 </div>
             </div>

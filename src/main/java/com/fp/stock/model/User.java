@@ -40,7 +40,7 @@ public class User implements UserDetails, Serializable {
     private ZonedDateTime createdDate = ZonedDateTime.now();
 
     @Min(value = 0)
-    @Column(name="financial_resources", nullable = false)
+    @Column(name="financial_resources", nullable = false, scale = 4)
     private BigDecimal financialResources = BigDecimal.ZERO;
 
     @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)

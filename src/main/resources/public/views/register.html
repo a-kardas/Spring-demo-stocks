@@ -8,14 +8,14 @@
                 <h5>Your account</h5>
                 <div class="row">
                     <div class="input-field col s12">
-                        <input id="name" type="text" class="validate" ng-model="newUser.name" pattern="^[A-Za-z]{1,}\s[A-Za-z]{1,}$" required>
+                        <input id="name" type="text" class="validate" ng-model="newUser.name" pattern="^[A-Za-z]{1,}\s[A-Za-z]{1,}[A-Za-z-\s]*$" required>
                         <label for="name" data-error="Please text your first and last name" data-success="OK">First and last name</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
                         <input id="email" type="email" class="validate" ng-model="newUser.email" required>
-                        <label for="email" data-error="Nope. It isn't proper email address." data-success="We won't spam you. Maybe.">Email</label>
+                        <label for="email" data-error="Enter proper email address." data-success="OK">Email</label>
                     </div>
                 </div>
                 <div class="row">
@@ -37,7 +37,7 @@
                 <div class="row">
                     <div class="input-field col s12">
                         <input id="financialResources" type="number" min="0" class="validate" ng-model="newUser.financialResources" required>
-                        <label for="financialResources" data-error="Please text your financial resources" data-success="OK">Your financial resources in PLN</label>
+                        <label for="financialResources" data-error="Enter your financial resources" data-success="OK">Your financial resources in PLN</label>
                     </div>
                 </div>
                 <div class="row">

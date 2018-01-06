@@ -38,7 +38,7 @@ public class OperationValidator extends OperationBaseValidator {
     }
 
     public ValidatorResult validateSale(Principal principal, StockDTO stockDTO) throws OperationsNotAllowedException {
-        ValidatorResult result = (ValidatorResult) validate(stockDTO);
+        ValidatorResult result = new ValidatorResult(validate(stockDTO));
 
         //VALIDATE USER AND HIS RESOURCES
         User user = getUserOrThrow(principal);
@@ -54,6 +54,10 @@ public class OperationValidator extends OperationBaseValidator {
             throw new OperationsNotAllowedException(OperationsNotAllowedException.USER_DONT_HAVE_ENOUGH_UNITS);
         }
 
+        BigDecimal stocksPrice = result.getRate().getPrice().multiply(BigDecimal.valueOf(stockDTO.getAmount()));
+
+        result.setStockPrice(stocksPrice);
+        result.setUser(user);
         return result;
     }
 

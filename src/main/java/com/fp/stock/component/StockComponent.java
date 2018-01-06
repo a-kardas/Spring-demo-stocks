@@ -42,6 +42,8 @@ public class StockComponent {
             ResponseEntity<ExternalStockListDTO> response = restTemplate.getForEntity(url, ExternalStockListDTO.class);
             ExternalStockListDTO stocks = response.getBody();
 
+            log.debug("Scheduled job - downloaded rates with publication date " + stocks.getPublicationDate());
+
             this.publisher.publishEvent(new ExchangeRateDownloadedEvent(stocks));
             this.publisher.publishEvent(new ExchangeRateSuccessEvent());
 

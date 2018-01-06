@@ -42,7 +42,7 @@ angular.module('stockApp')
           $scope.userStock = {
               name : selectedStock.name,
               code : selectedStock.code,
-              amount : 0,
+              amount : selectedStock.rate.unit,
               rate : selectedStock.rate
           }
 
@@ -50,7 +50,13 @@ angular.module('stockApp')
       }
 
       $scope.openSellStockModal = function (selectedUserStock) {
-          $scope.userStock = selectedUserStock;
+          $scope.userStock = {
+              name : selectedUserStock.stock.name,
+              code : selectedUserStock.stock.code,
+              ownAmount : selectedUserStock.amount,
+              amount :  selectedUserStock.amount,
+              rate :  selectedUserStock.stock.rate
+          }
           $scope.sellStockModal = true;
       }
 

@@ -2,23 +2,25 @@ package com.fp.stock.component;
 
 import com.fp.stock.component.events.ExchangeRateErrorEvent;
 import com.fp.stock.component.events.ExchangeRateSuccessEvent;
-import com.fp.stock.component.operations.OperationType;
 import com.fp.stock.component.operations.DeferredStackOperation;
+import com.fp.stock.component.operations.OperationType;
 import com.fp.stock.component.validator.ValidatorResult;
 import com.fp.stock.config.OperationsNotAllowedException;
 import com.fp.stock.dto.StockDTO;
 import com.fp.stock.model.Stock;
 import com.fp.stock.model.UserStock;
 import com.fp.stock.repository.StockRepository;
+import com.fp.stock.repository.UserRepository;
 import com.fp.stock.repository.UserStockRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.security.Principal;
@@ -46,6 +48,11 @@ public class StackOperationComponent {
     @Autowired
     private UserStockRepository userStockRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Async
+    @EventListener
     public void handleExchangeRateError(ExchangeRateErrorEvent event) {
         log.info("Event handler - Exchange rate error.");
         isExchangeRateActual = false;
@@ -54,6 +61,8 @@ public class StackOperationComponent {
         );
     }
 
+    @Async
+    @EventListener
     public void handleExchangeRateSuccess(ExchangeRateSuccessEvent event) {
         log.info("Event handler - Exchange rate success.");
         isExchangeRateActual = true;
@@ -110,6 +119,8 @@ public class StackOperationComponent {
 
         BigDecimal restUserMoney = purchase.getUser().getFinancialResources().subtract(purchase.getStockPrice());
         purchase.getUser().setFinancialResources(restUserMoney);
+        userRepository.save(purchase.getUser());
+
         Optional<UserStock> userStock = getUserStock(purchase.getUser().getId(), purchase.getStock().getId());
 
         if(userStock.isPresent()){
@@ -140,10 +151,19 @@ public class StackOperationComponent {
         sale.getUser().getStocks().stream().forEach(s -> {
             if(s.getStockId() == sale.getStock().getId()){
                 int amount = s.getAmount();
-                s.setAmount(amount - stockDTO.getAmount());
-                userStockRepository.save(s);
+
+                if(amount == 0) {
+                    userStockRepository.delete(s.getId());
+                } else {
+                    s.setAmount(amount - stockDTO.getAmount());
+                    userStockRepository.save(s);
+                }
             }
         });
+
+        BigDecimal userMoney = sale.getUser().getFinancialResources().add(sale.getStockPrice());
+        sale.getUser().setFinancialResources(userMoney);
+        userRepository.save(sale.getUser());
 
         return true;
     }

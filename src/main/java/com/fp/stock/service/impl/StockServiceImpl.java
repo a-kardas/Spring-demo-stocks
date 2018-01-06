@@ -47,6 +47,8 @@ public class StockServiceImpl implements StockService {
         if(!stockList.getData().getItems().isEmpty()){
             ZonedDateTime publicationDate = stockList.getData().getPublicationDate();
 
+            log.debug("Event handler - get rates with publication date " + publicationDate.toString());
+
             stockList.getData().getItems().stream().forEach(s -> {
                 Optional<Stock> existingStock = stockRepository.findByNameAndCode(s.getName(), s.getCode()); //check if same exists
 
@@ -66,10 +68,6 @@ public class StockServiceImpl implements StockService {
     @Override
     public List<StockDTO> getExchangeRate() {
         List<Stock> all = stockRepository.findAll();
-        all.stream().forEach(s -> {
-            Set<ExchangeRate> exchangeRates = s.getExchangeRates();
-            exchangeRates.stream().sorted((e1, e2) -> e1.getPublicationDate().compareTo(e2.getPublicationDate()));
-        });
         List<StockDTO> stockDTOS = StockMapper.INSTANCE.mapListToDTO(all);
 
         return stockDTOS;
@@ -78,11 +76,6 @@ public class StockServiceImpl implements StockService {
     @Override
     public List<StockDTO> getPublicStocks() {
         List<Stock> all = stockRepository.findAll();
-        all.stream().forEach(s -> {
-            Set<ExchangeRate> exchangeRates = s.getExchangeRates();
-            exchangeRates.stream().sorted((e1, e2) -> e1.getPublicationDate().compareTo(e2.getPublicationDate()));
-        });
-
         List<StockDTO> stockDTOS = StockMapper.INSTANCE.mapListToDTO(all);
 
         stockDTOS.stream().forEach(s -> s.clearNonPublicData());

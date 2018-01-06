@@ -15,10 +15,6 @@ public interface BasicMapper {
 
             Iterator<ExchangeRate> iterator = exchangeRates.iterator();
             rate = iterator.next();
-            //We want last, the most up-to-date rate
-            while(iterator.hasNext()){
-                rate = iterator.next();
-            }
             return map(rate);
         }
 

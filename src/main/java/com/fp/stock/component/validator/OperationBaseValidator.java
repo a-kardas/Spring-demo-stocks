@@ -11,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public abstract class OperationBaseValidator {
 
@@ -48,11 +46,6 @@ public abstract class OperationBaseValidator {
     protected Stock getStockOrThrow(StockDTO stockDTO) throws OperationsNotAllowedException {
         Optional<Stock> stock = stockRepository.findByNameAndCode(stockDTO.getName(), stockDTO.getCode());
         if(stock.isPresent()){
-            /*Set<ExchangeRate> sorted = stock.get().getExchangeRates().stream()
-                    .sorted((e1, e2) -> e1.getPublicationDate().compareTo(e2.getPublicationDate()))
-                    .collect(Collectors.toSet());
-
-            stock.get().setExchangeRates(sorted);*/
             return stock.get();
         }
 
