@@ -5,7 +5,8 @@ angular.module('stockApp')
   .controller('StockCtrl', function ($scope, StockRsc, UserRsc, $filter) {
 
       var _timeout = [];
-      var default_timeout = 10000;
+      var _default_timeout = 10000;
+      var _plotCode = undefined;
 
       $scope.exchangeRate = {};
 
@@ -14,6 +15,13 @@ angular.module('stockApp')
               $scope.exchangeRate.stocks = data;
               $scope.exchangeRate.publicationDate = data[0].rate.publicationDate;
 
+              if(_plotCode !== undefined){
+                  $scope.exchangeRate.stocks.forEach(function (rate) {
+                      if(rate.code === _plotCode){
+                          $scope.showPlot(rate);
+                      }
+                  })
+              }
           }, function (error) {
               console.log(error);
           })
@@ -92,6 +100,7 @@ angular.module('stockApp')
       }
 
       $scope.showPlot = function(selectedStock) {
+          _plotCode = selectedStock.code;
           $scope.labels = [];
           $scope.series = [];
           $scope.data = [
@@ -117,6 +126,6 @@ angular.module('stockApp')
       }
 
       _reloadData();
-      _timeout[0] = setInterval(_getExchangeRate, default_timeout);
-      _timeout[1] = setInterval(_getUserWallet, default_timeout);
+      _timeout[0] = setInterval(_getExchangeRate, _default_timeout);
+      _timeout[1] = setInterval(_getUserWallet, _default_timeout);
   });
