@@ -1,7 +1,7 @@
 package com.fp.stock.service;
 
 import com.fp.stock.component.validator.OperationValidator;
-import com.fp.stock.config.OperationsNotAllowedException;
+import com.fp.stock.component.exceptions.OperationsNotAllowedException;
 import com.fp.stock.dto.StockDTO;
 import com.fp.stock.model.ExchangeRate;
 import com.fp.stock.model.Stock;

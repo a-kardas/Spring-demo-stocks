@@ -26,6 +26,7 @@ public class DatabaseConfiguration {
     private String testUrl;
 
     @Bean
+    @Profile("default")
     DataSource dataSource(DataSourceProperties dataSourceProperties) throws PropertyVetoException {
 
         log.info("Configuring Datasource");

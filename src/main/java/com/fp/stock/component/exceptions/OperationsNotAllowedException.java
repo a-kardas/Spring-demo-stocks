@@ -1,4 +1,4 @@
-package com.fp.stock.config;
+package com.fp.stock.component.exceptions;
 
 
 public class OperationsNotAllowedException extends Exception {

@@ -2,7 +2,7 @@
 
 
 angular.module('stockApp')
-  .controller('StockCtrl', function ($scope, StockRsc, UserRsc) {
+  .controller('StockCtrl', function ($scope, StockRsc, UserRsc, $filter) {
 
       var _timeout = [];
       var default_timeout = 10000;
@@ -49,8 +49,7 @@ angular.module('stockApp')
               amount : selectedStock.rate.unit,
               rate : selectedStock.rate
           }
-
-          $scope.buyStockModal = true;
+          $('#buyStockModal').modal('open');
       }
 
       $scope.openSellStockModal = function (selectedUserStock) {
@@ -61,7 +60,8 @@ angular.module('stockApp')
               amount :  selectedUserStock.amount,
               rate :  selectedUserStock.stock.rate
           }
-          $scope.sellStockModal = true;
+
+          $('#sellStockModal').modal('open');
       }
 
       $scope.sellStock = function () {
@@ -87,8 +87,33 @@ angular.module('stockApp')
       }
 
       $scope.dismissModal = function () {
-          $scope.buyStockModal = false;
-          $scope.sellStockModal = false;
+          $('#buyStockModal').modal('close');
+          $('#sellStockModal').modal('close');
+      }
+
+      $scope.showPlot = function(selectedStock) {
+          $scope.labels = [];
+          $scope.series = [];
+          $scope.data = [
+              []
+          ];
+          $scope.series.push(selectedStock.code);
+
+          var begining = selectedStock.historicalData.length - 1;
+          for(var i = begining; i >= 0; i--)
+          {
+              if(i == begining) {
+                  var label = $filter('date')(selectedStock.historicalData[i].publicationDate, 'HH:mm:ss');
+                  $scope.labels.push(label);
+              } else if(i == 0){
+                  var label = $filter('date')(selectedStock.historicalData[i].publicationDate, 'HH:mm:ss');
+                  $scope.labels.push(label);
+              } else {
+                  $scope.labels.push("");
+              }
+
+              $scope.data[0].push(selectedStock.historicalData[i].price);
+          }
       }
 
       _reloadData();

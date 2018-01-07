@@ -1,6 +1,6 @@
 package com.fp.stock.component.validator;
 
-import com.fp.stock.config.OperationsNotAllowedException;
+import com.fp.stock.component.exceptions.OperationsNotAllowedException;
 import com.fp.stock.dto.StockDTO;
 import com.fp.stock.model.User;
 import com.fp.stock.repository.UserRepository;

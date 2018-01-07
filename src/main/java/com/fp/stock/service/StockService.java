@@ -4,12 +4,11 @@ package com.fp.stock.service;
 import com.fp.stock.component.events.ExchangeRateDownloadedEvent;
 import com.fp.stock.component.operations.DeferredStackOperation;
 import com.fp.stock.dto.ExternalStockListDTO;
-import com.fp.stock.config.OperationsNotAllowedException;
+import com.fp.stock.component.exceptions.OperationsNotAllowedException;
 import com.fp.stock.dto.StockDTO;
 import com.fp.stock.model.Stock;
 import com.fp.stock.model.User;
 
-import java.security.Principal;
 import java.util.List;
 
 public interface StockService {

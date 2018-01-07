@@ -18,9 +18,7 @@ public interface UserMapper extends BasicMapper {
             @Mapping(source = "login", target = "email"),
             @Mapping(target = "stocks", ignore = true),
             @Mapping(target = "password", ignore = true),
-            @Mapping(source = "stocks", target = "userStocks"),
-/*            @Mapping(source = "exchangeRates", target = "rate"),*/
-/*            @Mapping(source = "exchangeRates", target = "stock")*/
+            @Mapping(source = "stocks", target = "userStocks")
     })
     UserDTO userToUserDTO(User user);
 

@@ -8,7 +8,7 @@ angular
     'ngSanitize',
     'ngTouch',
     'LocalStorageModule',
-    'ui.materialize'
+    'chart.js'
   ])
     .run(function($rootScope, AuthSrv){
         AuthSrv.isAuthenticated();

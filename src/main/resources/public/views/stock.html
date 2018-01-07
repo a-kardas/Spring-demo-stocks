@@ -13,16 +13,21 @@
         </thead>
         <tbody>
         <tr ng-repeat="stock in exchangeRate.stocks">
-          <td>{{stock.code}}</td>
+          <td><a ng-click="showPlot(stock)" href="">{{stock.code}}</a></td>
           <td>{{stock.rate.price}}</td>
           <td>
-            <a class="waves-effect waves-light btn" ng-click="openBuyStockModal(stock)" data-target='buyStockModal' modal open="buyStockModal"  >
+            <a class="waves-effect waves-light btn" ng-click="openBuyStockModal(stock)" >
               Buy
             </a>
           </td>
         </tr>
         </tbody>
       </table>
+      <div class="divider"></div>
+      </br>
+      <canvas id="line" class="chart chart-line" chart-data="data"
+              chart-labels="labels" chart-series="series" chart-options="options">
+      </canvas>
     </div>
     <div class="col s12 m6 l6">
       <p class="flow-text">My wallet</p>
@@ -43,7 +48,7 @@
         <td>{{userStock.amount}}</td>
         <td>{{userStock.amount * userStock.stock.rate.price | number: 4}}</td>
         <td>
-          <a class="waves-effect waves-light btn" ng-click="openSellStockModal(userStock)" data-target='sellStockModal' modal open="sellStockModal" >
+          <a class="waves-effect waves-light btn" ng-click="openSellStockModal(userStock)">
             Sell
           </a>
         </td>

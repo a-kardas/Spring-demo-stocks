@@ -11,4 +11,8 @@ import java.util.List;
 public interface ExchangeRateRepository extends JpaRepository<ExchangeRate, Long> {
 
     List<ExchangeRate> findAllByStockIdAndUnitAndPrice(Long stockId, int unit, BigDecimal price);
+
+    long countByStockId(Long stockId);
+
+    List<ExchangeRate> findAllByStockIdOrderByCreationDateDesc(Long stockId);
 }

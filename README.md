@@ -5,8 +5,9 @@
 * npm ^3.5.2
 * [See more https://nodejs.org/en/]
 
-## How to run
-* mvn clean install
+## How to build&run
+* mvn clean install -P linux-dev - if you are using Linux
+* mvn clean install -P windows-dev - if you are using Windows
 * mvn spring-boot:run
 
 ## Important notes

@@ -1,7 +1,6 @@
 package com.fp.stock.controller;
 
 import com.fp.stock.component.operations.DeferredStackOperation;
-import com.fp.stock.config.OperationsNotAllowedException;
 import com.fp.stock.dto.StockDTO;
 import com.fp.stock.model.User;
 import com.fp.stock.service.StockService;

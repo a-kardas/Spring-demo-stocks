@@ -26,6 +26,27 @@
 		<org.projectlombok.version>1.16.14</org.projectlombok.version>
 	</properties>
 
+	<profiles>
+		<profile>
+			<id>windows-dev</id>
+			<properties>
+				<npm.home>npm.cmd</npm.home>
+				<bower.home>node_modules/.bin/bower.cmd</bower.home>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>linux-dev</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<npm.home>npm</npm.home>
+				<bower.home>node_modules/bower/bin/bower</bower.home>
+			</properties>
+		</profile>
+	</profiles>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -96,7 +117,7 @@
 						<id>exec-npm-install</id>
 						<phase>generate-sources</phase>
 						<configuration>
-							<executable>npm</executable>
+							<executable>${npm.home}</executable>
 							<arguments>
 								<argument>install</argument>
 							</arguments>
@@ -109,7 +130,7 @@
 						<id>exec-bower-install</id>
 						<phase>generate-sources</phase>
 						<configuration>
-							<executable>node_modules/bower/bin/bower</executable>
+							<executable>${bower.home}</executable>
 							<arguments>
 								<argument>install</argument>
 							</arguments>

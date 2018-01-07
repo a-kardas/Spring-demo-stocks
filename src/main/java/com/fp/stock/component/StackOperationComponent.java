@@ -6,7 +6,7 @@ import com.fp.stock.component.operations.DeferredStackOperation;
 import com.fp.stock.component.operations.OperationType;
 import com.fp.stock.component.validator.OperationValidator;
 import com.fp.stock.component.validator.ValidatorResult;
-import com.fp.stock.config.OperationsNotAllowedException;
+import com.fp.stock.component.exceptions.OperationsNotAllowedException;
 import com.fp.stock.dto.StockDTO;
 import com.fp.stock.model.Stock;
 import com.fp.stock.model.User;
@@ -25,7 +25,6 @@ import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
-import java.security.Principal;
 import java.util.LinkedHashSet;
 import java.util.Optional;
 import java.util.Queue;
