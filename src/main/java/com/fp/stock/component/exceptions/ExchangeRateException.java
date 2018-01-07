@@ -1,4 +1,4 @@
-package com.fp.stock.config;
+package com.fp.stock.component.exceptions;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

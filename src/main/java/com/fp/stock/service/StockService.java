@@ -7,6 +7,7 @@ import com.fp.stock.dto.ExternalStockListDTO;
 import com.fp.stock.config.OperationsNotAllowedException;
 import com.fp.stock.dto.StockDTO;
 import com.fp.stock.model.Stock;
+import com.fp.stock.model.User;
 
 import java.security.Principal;
 import java.util.List;
@@ -19,9 +20,9 @@ public interface StockService {
 
     List<StockDTO> getPublicStocks();
 
-    DeferredStackOperation buyStocks(Principal principal, StockDTO stockDTO) throws OperationsNotAllowedException;
+    DeferredStackOperation buyStocks(User user, StockDTO stockDTO) throws OperationsNotAllowedException;
 
-    DeferredStackOperation sellStocks(Principal principal, StockDTO stockDTO) throws OperationsNotAllowedException;
+    DeferredStackOperation sellStocks(User user, StockDTO stockDTO) throws OperationsNotAllowedException;
 
     Stock getExchangeRate(Long id);
 }

@@ -15,12 +15,12 @@
                 <div class="row">
                     <div class="input-field col s12">
                         <input id="email" type="email" class="validate" ng-model="newUser.email" required>
-                        <label for="email" data-error="Enter proper email address." data-success="OK">Email</label>
+                        <label for="email" data-error="Enter valid email address." data-success="OK">Email</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
-                        <input id="password" type="password" class="validate" ng-model="newUser.password" pattern="^^[a-zA-Z0-9@#$%\^&+=]{4,}$" required>
+                        <input id="password" type="password" class="validate" ng-model="newUser.password" pattern="^[a-zA-Z0-9@#$%\^&+=]{4,}$" required>
                         <label for="password" data-error="Only letters, numbers and special characters are allowed. Minimum 4 signs." data-success="OK">Password</label>
                     </div>
                 </div>
@@ -36,7 +36,7 @@
                 <h5>Finacial information</h5>
                 <div class="row">
                     <div class="input-field col s12">
-                        <input id="financialResources" type="number" min="0" class="validate" ng-model="newUser.financialResources" required>
+                        <input id="financialResources" type="number" min="0" class="validate" ng-model="newUser.financialResources" step="0.0001" required>
                         <label for="financialResources" data-error="Enter your financial resources" data-success="OK">Your financial resources in PLN</label>
                     </div>
                 </div>
@@ -65,7 +65,7 @@
                 </div>
             </div>
             <div class="row">
-                <a class="waves-effect waves-light btn" ng-click="register()" ng-disabled="registration.$invalid">Register <i class="material-icons right">send</i></a>
+                <button type="submit" class="waves-effect waves-light btn" ng-click="register()" ng-disabled="registration.$invalid">Register <i class="material-icons right">send</i></button>
             </div>
         </form>
     </div>

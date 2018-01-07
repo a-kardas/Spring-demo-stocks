@@ -15,7 +15,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name="user")
+@Table(name="STOCK_USER")
 @Data
 public class User implements UserDetails, Serializable {
 
@@ -43,7 +43,7 @@ public class User implements UserDetails, Serializable {
     @Column(name="financial_resources", nullable = false, scale = 4)
     private BigDecimal financialResources = BigDecimal.ZERO;
 
-    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "user_id")
     private Set<UserStock> stocks = new HashSet<>();
 

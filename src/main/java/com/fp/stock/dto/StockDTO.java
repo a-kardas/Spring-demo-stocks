@@ -5,6 +5,7 @@ import com.fp.stock.model.ExchangeRate;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.constraints.Min;
 import java.io.Serializable;
 
 @Data

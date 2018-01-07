@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
-@Table(name="user_stock")
+@Table(name="USER_STOCK")
 @Data
 public class UserStock implements Serializable {
 

@@ -16,7 +16,7 @@
           <td>{{stock.code}}</td>
           <td>{{stock.rate.price}}</td>
           <td>
-            <a class="waves-effect waves-light btn" ng-click="openBuyStockModal(stock)" data-target='buyStockModal' modal open="buyStockModal" >
+            <a class="waves-effect waves-light btn" ng-click="openBuyStockModal(stock)" data-target='buyStockModal' modal open="buyStockModal"  >
               Buy
             </a>
           </td>
@@ -43,7 +43,7 @@
         <td>{{userStock.amount}}</td>
         <td>{{userStock.amount * userStock.stock.rate.price | number: 4}}</td>
         <td>
-          <a class="waves-effect waves-light btn" ng-click="openSellStockModal(userStock)" data-target='sellStockModal' modal open="sellStockModal">
+          <a class="waves-effect waves-light btn" ng-click="openSellStockModal(userStock)" data-target='sellStockModal' modal open="sellStockModal" >
             Sell
           </a>
         </td>

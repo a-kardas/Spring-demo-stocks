@@ -10,7 +10,7 @@ angular.module('stockApp')
 
         $scope.register = function () {
             if($scope.newUser.password !== $scope.newUser.repeatedPassword){
-                Materialize.toast('Hey, hey, hey! Passwords are not the same', 4000);
+                Materialize.toast('Hey, hey, hey! Passwords are not the same', 8000);
                 return;
             } else {
                 register($scope.newUser);
@@ -21,8 +21,13 @@ angular.module('stockApp')
             RegisterRsc.user(data, function(){
                 Materialize.toast('Thanks! Now you can log in!', 4000);
                 $location.path("/email");
-            }, function(){
-                Materialize.toast('Error! Probably entered e-mail address is in use.', 4000);
+            }, function(error){
+                if(error.data && error.data.errors){
+                    Materialize.toast(error.data.errors[0].defaultMessage, 8000);
+                } else {
+                    Materialize.toast('Error!', 8000);
+                }
+
                 return;
             })
         }
@@ -30,7 +35,6 @@ angular.module('stockApp')
         var _getStocks = function(){
             StockRsc.publicList({}, function(data){
                 for(var i = 0; i < data.length; i++){
-                   // $scope.newUser.stocks[i] = { stock : data.items[i], amount : undefined}
                     $scope.newUser.stocks[i] = data[i];
                 }
 

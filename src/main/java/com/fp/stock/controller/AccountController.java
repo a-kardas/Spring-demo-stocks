@@ -1,6 +1,7 @@
 package com.fp.stock.controller;
 
 
+import com.fp.stock.dto.AuthUserDTO;
 import com.fp.stock.dto.UserDTO;
 import com.fp.stock.mapper.UserMapper;
 import com.fp.stock.model.User;
@@ -41,7 +42,7 @@ public class AccountController {
 
     @RequestMapping(value = "/authenticate",
             method = RequestMethod.POST)
-    public void authorize(@RequestBody @Valid UserDTO userDTO) {
+    public void authorize(@RequestBody @Valid AuthUserDTO userDTO) {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword());
         Authentication authentication = this.authenticationManager.authenticate(token);
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -63,7 +64,7 @@ public class AccountController {
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> register(@RequestBody @Valid UserDTO userDTO) {
+    public ResponseEntity<UserDTO> register(@RequestBody @Valid UserDTO userDTO) throws Exception {
         log.debug("REST request to register a new user");
         UserDTO result = userService.saveUser(userDTO);
         return new ResponseEntity<>(result, HttpStatus.CREATED);

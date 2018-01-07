@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -37,27 +38,36 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     @Transactional
-    public UserDTO saveUser(UserDTO userDTO) {
+    public UserDTO saveUser(UserDTO userDTO) throws Exception {
         User user = UserMapper.INSTANCE.userDTOToUser(userDTO);
+
+        Optional<User> oneByLogin = userRepository.findOneByLogin(user.getLogin());
+
+        if (oneByLogin.isPresent()) {
+            throw new Exception("E-mail is already registered");
+        }
+
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         User savedUser = userRepository.save(user);
 
-        List<UserStock> userStockList = new ArrayList<>();
-        userDTO.getStocks().stream().forEach(s -> {
-            if(s.getAmount() != null && s.getAmount() > 0) {
-                Optional<Stock> stock = stockRepository.findByNameAndCode(s.getName(), s.getCode());
-                if(stock.isPresent()){
-                    UserStock userStock = new UserStock();
-                    userStock.setUserId(savedUser.getId());
-                    userStock.setStockId(stock.get().getId());
-                    userStock.setAmount(s.getAmount());
-                    userStockList.add(userStock);
+        if(userDTO.getStocks() != null){
+            List<UserStock> userStockList = new ArrayList<>();
+            userDTO.getStocks().stream().forEach(s -> {
+                if(s.getAmount() != null && s.getAmount() > 0) {
+                    Optional<Stock> stock = stockRepository.findByNameAndCode(s.getName(), s.getCode());
+                    if(stock.isPresent()){
+                        UserStock userStock = new UserStock();
+                        userStock.setUserId(savedUser.getId());
+                        userStock.setStockId(stock.get().getId());
+                        userStock.setAmount(s.getAmount());
+                        userStockList.add(userStock);
+                    }
                 }
-            }
-        });
+            });
 
-        if(!userStockList.isEmpty()){
-            userStockRepository.save(userStockList);
+            if(!userStockList.isEmpty()){
+                userStockRepository.save(userStockList);
+            }
         }
 
         userDTO.setPassword("");
@@ -71,7 +81,20 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             return null;
 
         UserDTO userDTO = UserMapper.INSTANCE.userToUserDTO(user.get());
+        userDTO.sortUserStocksByCode();
+
         return userDTO;
+    }
+
+    @Override
+    public User findUserOrThrow(Principal principal) throws Exception {
+        Optional<User> oneByLogin = userRepository.findOneByLogin(principal.getName());
+        if(oneByLogin.isPresent()){
+            User user = oneByLogin.get();
+            return user;
+        }
+
+        throw new Exception("User not found!");
     }
 
     @Override

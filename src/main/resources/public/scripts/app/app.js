@@ -27,6 +27,5 @@ angular
 
     })
     .config(function($httpProvider){
-        //$httpProvider.defaults.withCredentials = true;
         $httpProvider.interceptors.push('authExpiredInterceptor');
     });

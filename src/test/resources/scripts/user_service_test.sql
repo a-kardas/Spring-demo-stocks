@@ -1,0 +1,1 @@
+INSERT INTO STOCK_USER(id, email, password, name, financial_resources, created_date) VALUES (1, 'test2@test.pl', 'test2', 'Test2 Test2', 0, 'aced00057372000d6a6176612e74696d652e536572955d84ba1b2248b20c00007870771f06000007e20106172b0a2b45e1800407000d4575726f70652f57617273617778');

@@ -4,10 +4,12 @@ import com.fp.stock.component.events.ExchangeRateErrorEvent;
 import com.fp.stock.component.events.ExchangeRateSuccessEvent;
 import com.fp.stock.component.operations.DeferredStackOperation;
 import com.fp.stock.component.operations.OperationType;
+import com.fp.stock.component.validator.OperationValidator;
 import com.fp.stock.component.validator.ValidatorResult;
 import com.fp.stock.config.OperationsNotAllowedException;
 import com.fp.stock.dto.StockDTO;
 import com.fp.stock.model.Stock;
+import com.fp.stock.model.User;
 import com.fp.stock.model.UserStock;
 import com.fp.stock.repository.StockRepository;
 import com.fp.stock.repository.UserRepository;
@@ -24,8 +26,10 @@ import org.springframework.stereotype.Component;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.security.Principal;
+import java.util.LinkedHashSet;
 import java.util.Optional;
 import java.util.Queue;
+import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 @Component
@@ -85,12 +89,12 @@ public class StackOperationComponent {
 
                 if(operation.getType().equals(OperationType.PURCHASE)){
 
-                    isSuccess = buyStocks(operation.getPrincipal(), operation.getStockDTO(), operation);
+                    isSuccess = buyStocks(operation.getUser(), operation.getStockDTO(), operation);
                     setResultForRequest(operation, isSuccess);
 
                 } else if (operation.getType().equals(OperationType.SALE)){
 
-                    isSuccess = sellStocks(operation.getPrincipal(), operation.getStockDTO(), operation);
+                    isSuccess = sellStocks(operation.getUser(), operation.getStockDTO(), operation);
                     setResultForRequest(operation, isSuccess);
 
                 } else {
@@ -108,12 +112,12 @@ public class StackOperationComponent {
     }
 
     @Transactional
-    boolean buyStocks(Principal principal, StockDTO stockDTO, DeferredStackOperation operation) throws OperationsNotAllowedException {
+    boolean buyStocks(User user, StockDTO stockDTO, DeferredStackOperation operation) throws OperationsNotAllowedException {
         if(!isExchangeRateActual){
             throw new OperationsNotAllowedException(OperationsNotAllowedException.DEFAULT);
         }
 
-        ValidatorResult purchase = operationValidator.validatePurchase(principal, stockDTO);
+        ValidatorResult purchase = operationValidator.validatePurchase(user, stockDTO);
 
         changeAmountOfStock(purchase.getStock().getId(), stockDTO.getAmount(), true);
 
@@ -139,27 +143,33 @@ public class StackOperationComponent {
     }
 
     @Transactional
-    boolean sellStocks(Principal principal, StockDTO stockDTO, DeferredStackOperation operation) throws OperationsNotAllowedException {
+    boolean sellStocks(User user, StockDTO stockDTO, DeferredStackOperation operation) throws OperationsNotAllowedException {
         if(!isExchangeRateActual){
             throw new OperationsNotAllowedException(OperationsNotAllowedException.DEFAULT);
         }
 
-        ValidatorResult sale = operationValidator.validateSale(principal, stockDTO);
+        ValidatorResult sale = operationValidator.validateSale(user, stockDTO);
 
         changeAmountOfStock(sale.getStock().getId(), stockDTO.getAmount(), false);
+
+        Set<UserStock> toRemove = new LinkedHashSet<>();
 
         sale.getUser().getStocks().stream().forEach(s -> {
             if(s.getStockId() == sale.getStock().getId()){
                 int amount = s.getAmount();
 
-                if(amount == 0) {
+                if(amount - stockDTO.getAmount() == 0) {
                     userStockRepository.delete(s.getId());
+                    toRemove.add(s);
+
                 } else {
                     s.setAmount(amount - stockDTO.getAmount());
                     userStockRepository.save(s);
                 }
             }
         });
+
+        sale.getUser().getStocks().removeAll(toRemove);
 
         BigDecimal userMoney = sale.getUser().getFinancialResources().add(sale.getStockPrice());
         sale.getUser().setFinancialResources(userMoney);

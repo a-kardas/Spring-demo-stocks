@@ -8,11 +8,9 @@ import com.fp.stock.dto.ExternalStockListDTO;
 import com.fp.stock.config.OperationsNotAllowedException;
 import com.fp.stock.dto.StockDTO;
 import com.fp.stock.mapper.StockMapper;
-import com.fp.stock.model.ExchangeRate;
 import com.fp.stock.model.Stock;
-import com.fp.stock.model.UserStock;
+import com.fp.stock.model.User;
 import com.fp.stock.repository.StockRepository;
-import com.fp.stock.repository.UserStockRepository;
 import com.fp.stock.service.StockService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +23,6 @@ import java.security.Principal;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class StockServiceImpl implements StockService {
@@ -67,7 +64,7 @@ public class StockServiceImpl implements StockService {
 
     @Override
     public List<StockDTO> getExchangeRate() {
-        List<Stock> all = stockRepository.findAll();
+        List<Stock> all = stockRepository.findAllByOrderByCodeAsc();
         List<StockDTO> stockDTOS = StockMapper.INSTANCE.mapListToDTO(all);
 
         return stockDTOS;
@@ -84,9 +81,9 @@ public class StockServiceImpl implements StockService {
     }
 
     @Override
-    public DeferredStackOperation buyStocks(Principal principal, StockDTO stockDTO) throws OperationsNotAllowedException {
+    public DeferredStackOperation buyStocks(User user, StockDTO stockDTO) throws OperationsNotAllowedException {
         DeferredStackOperation operation = new DeferredStackOperation();
-        operation.setPrincipal(principal);
+        operation.setUser(user);
         operation.setStockDTO(stockDTO);
         operation.setType(OperationType.PURCHASE);
 
@@ -95,9 +92,9 @@ public class StockServiceImpl implements StockService {
     }
 
     @Override
-    public DeferredStackOperation sellStocks(Principal principal, StockDTO stockDTO) throws OperationsNotAllowedException {
+    public DeferredStackOperation sellStocks(User user, StockDTO stockDTO) throws OperationsNotAllowedException {
         DeferredStackOperation operation = new DeferredStackOperation();
-        operation.setPrincipal(principal);
+        operation.setUser(user);
         operation.setStockDTO(stockDTO);
         operation.setType(OperationType.SALE);
 

@@ -1,4 +1,4 @@
-package com.fp.stock.config;
+package com.fp.stock.component.properties;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.NotBlank;

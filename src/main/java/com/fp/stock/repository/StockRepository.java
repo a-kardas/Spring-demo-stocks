@@ -11,4 +11,6 @@ import java.util.Optional;
 public interface StockRepository extends JpaRepository<Stock, Long> {
 
     Optional<Stock> findByNameAndCode(String name, String code);
+
+    List<Stock> findAllByOrderByCodeAsc();
 }

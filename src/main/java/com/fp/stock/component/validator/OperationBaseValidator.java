@@ -24,15 +24,11 @@ public abstract class OperationBaseValidator {
         //VALIDATE STOCK
         Stock stock = getStockOrThrow(stockDTO);
 
-        if(stock.getAmount() < stockDTO.getAmount()) {
-            throw new OperationsNotAllowedException(OperationsNotAllowedException.NOT_ENOUGH_UNITS_ON_STOCK);
-        }
-
         //VALIDATE RATES
         List<ExchangeRate> rates = getRatesOrThrow(stock.getId(), stockDTO);
         ExchangeRate rate = rates.stream().findFirst().get();
 
-        if(stockDTO.getAmount() % rate.getUnit() != 0) {
+        if(stockDTO.getAmount() == null || stockDTO.getAmount() % rate.getUnit() != 0 || stockDTO.getAmount() < 0) {
             throw new OperationsNotAllowedException(OperationsNotAllowedException.AMOUNT_IS_NOT_MULTIPLE);
         }
 
