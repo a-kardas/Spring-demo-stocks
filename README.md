@@ -1,4 +1,4 @@
-# Stocks app - Future Processing recruitment process
+# Stocks app
 
 ## Requirements 
 * java ^1.8.0_151
@@ -15,5 +15,3 @@
 ## Important notes
 * If you want to disable h2 console - take a look at application.properties
 * The h2 console is enable by default
-* If you want to change amount of stocks - go to localhost:8080/h2, use credentials form application.properties and execute query on STOCK table, example UPDATE STOCK
-                                                                                                                         SET AMOUNT = 1000
