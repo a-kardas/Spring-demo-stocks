@@ -8,8 +8,8 @@
 * [See more https://nodejs.org/en/]
 
 ## How to build&run
-* mvn clean install -P linux-dev - if you are using Linux
-* mvn clean install -P windows-dev - if you are using Windows
+* mvn clean install -P linux-dev - if you use Linux
+* mvn clean install -P windows-dev - if you use Windows
 * mvn spring-boot:run
 
 ## Important notes
